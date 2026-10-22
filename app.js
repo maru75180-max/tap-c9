@@ -6,7 +6,7 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
   2) These browser-side values are intended to be public.
   NEVER paste a service_role key, secret key, database password, or admin password here.
 */
-const SUPABASE_URL = "https://hhjgmnasanywweomljgn.supabase.co/rest/v1/";
+const SUPABASE_URL = "https://hhjgmnasanywweomljgn.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_x7JOQuB15Osgo2TpxbvBDg_PTI1m6kK";
 
 const configured = SUPABASE_URL.startsWith("https://") &&
