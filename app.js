@@ -141,7 +141,7 @@ async function restoreSession() {
   if (session) await loadAdminProfiles();
 }
 $("admin-open").addEventListener("click", async () => {
-  dialog.showModal();
+  $("admin-dialog").showModal();
   if (!configured) setStatus("auth-status", "First configure SUPABASE_URL and SUPABASE_PUBLISHABLE_KEY in app.js.", true);
   else await restoreSession();
 });
