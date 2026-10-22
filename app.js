@@ -145,7 +145,7 @@ $("admin-open").addEventListener("click", async () => {
   if (!configured) setStatus("auth-status", "First configure SUPABASE_URL and SUPABASE_PUBLISHABLE_KEY in app.js.", true);
   else await restoreSession();
 });
-$("admin-close").addEventListener("click", () => dialog.close());
+$("admin-close").addEventListener("click", () => $("admin-dialog").close());
 $("login-form").addEventListener("submit", async e => {
   e.preventDefault();
   if (!supabase) return setStatus("auth-status", "Add your Supabase Project URL and publishable key to app.js first.", true);
