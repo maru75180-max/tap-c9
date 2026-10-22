@@ -1,18 +1,10 @@
+
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
-// Supabase browser configuration
 const SUPABASE_URL = "https://hhjgmnasanywweomljgn.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_x7JOQuB15Osgo2TpxbvBDg_PTI1m6kK";
 
-const configured =
-  SUPABASE_URL.startsWith("https://") &&
-  !!SUPABASE_PUBLISHABLE_KEY &&
-  !SUPABASE_PUBLISHABLE_KEY.includes("PASTE_");
-
-const supabase = configured
-  ? createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
-  : null;
-
+const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 const $ = id => document.getElementById(id);
 
 let profiles = [];
@@ -23,6 +15,7 @@ $("year").textContent = new Date().getFullYear();
 
 function notify(message) {
   const el = $("toast");
+  if (!el) return;
   el.textContent = message;
   el.classList.add("show");
   clearTimeout(toastTimer);
@@ -38,11 +31,8 @@ function setStatus(id, message, error = false) {
 
 function escapeHtml(value = "") {
   return String(value).replace(/[&<>"']/g, ch => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;"
+    "&": "&amp;", "<": "&lt;", ">": "&gt;",
+    '"': "&quot;", "'": "&#39;"
   })[ch]);
 }
 
@@ -89,66 +79,142 @@ function cardHtml(p) {
   const initials = (p.full_name || "C9")
     .split(/\s+/).map(x => x[0]).slice(0, 2).join("").toUpperCase();
 
-  const url = "./?p=" + encodeURIComponent(p.slug);
-
-  return `<article class="client-card">
-    <div class="client-photo">
-      ${photo
-        ? `<img src="${escapeHtml(photo)}" alt="${escapeHtml(p.full_name)}" loading="lazy" referrerpolicy="no-referrer">`
-        : `<span>${escapeHtml(initials)}</span>`}
-    </div>
-    <div class="client-card-body">
-      <h3>${escapeHtml(p.full_name)}</h3>
-      <div class="role">${escapeHtml([p.job_title, p.company].filter(Boolean).join(" · "))}</div>
-      <p>${escapeHtml(p.bio || p.category || "Connect with this business professional.")}</p>
-      <div class="card-links">
-        <a href="${url}">View profile</a>
-        ${linksFor(p).slice(0, 3).map(([label, href]) =>
-          `<a href="${escapeHtml(href)}" ${
-            href.startsWith("http") ? 'target="_blank" rel="noopener noreferrer"' : ""
-          }>${escapeHtml(label)}</a>`
-        ).join("")}
+  return `
+    <article class="client-card">
+      <div class="client-photo">
+        ${photo
+          ? `<img src="${escapeHtml(photo)}" alt="${escapeHtml(p.full_name)}" loading="lazy">`
+          : `<span>${escapeHtml(initials)}</span>`}
       </div>
-    </div>
-  </article>`;
+      <div class="client-card-body">
+        <h3>${escapeHtml(p.full_name)}</h3>
+        <div class="role">${escapeHtml([p.job_title, p.company].filter(Boolean).join(" · "))}</div>
+        <p>${escapeHtml(p.bio || p.category || "Connect with this business professional.")}</p>
+        <div class="card-links">
+          <a href="./?p=${encodeURIComponent(p.slug)}">View Profile</a>
+          ${linksFor(p).slice(0, 3).map(([label, href]) =>
+            `<a href="${escapeHtml(href)}" ${href.startsWith("http") ? 'target="_blank" rel="noopener noreferrer"' : ""}>${escapeHtml(label)}</a>`
+          ).join("")}
+        </div>
+      </div>
+    </article>`;
 }
 
-function renderProfiles() {
-  const requestedSlug = new URLSearchParams(location.search).get("p");
-  const search = $("directory-search").value.trim().toLowerCase();
-  const published = profiles.filter(p => p.is_published);
+function renderSingleProfile(p, isPreview = false) {
+  document.title = `${p.full_name} | Tap C9`;
+
+  const photo = validWebUrl(p.photo_url);
+  const initials = (p.full_name || "C9")
+    .split(/\s+/).map(x => x[0]).slice(0, 2).join("").toUpperCase();
+
+  const contactLinks = linksFor(p).map(([label, href]) => `
+    <a href="${escapeHtml(href)}"
+       ${href.startsWith("http") ? 'target="_blank" rel="noopener noreferrer"' : ""}
+       style="display:inline-flex;padding:10px 14px;background:#edf6ff;color:#0756a8;border-radius:10px;font-weight:750;font-size:13px;">
+       ${escapeHtml(label)}
+    </a>
+  `).join("");
+
+  $("profile-grid").innerHTML = `
+    <section class="public-profile-view" style="max-width:760px;margin:0 auto;">
+      <p style="margin:0 0 20px;">
+        <a href="./" style="color:#0756a8;font-weight:750;">← Back to directory</a>
+        ${isPreview ? '<span style="margin-left:12px;color:#b45309;font-size:12px;">Preview mode</span>' : ""}
+      </p>
+
+      <article class="client-card">
+        <div class="client-photo" style="height:260px;">
+          ${photo
+            ? `<img src="${escapeHtml(photo)}" alt="${escapeHtml(p.full_name)}">`
+            : `<span style="font-size:54px;">${escapeHtml(initials)}</span>`}
+        </div>
+
+        <div class="client-card-body" style="padding:28px;">
+          <h1 style="font-size:clamp(30px,5vw,44px);letter-spacing:-1.5px;line-height:1.15;">
+            ${escapeHtml(p.full_name)}
+          </h1>
+
+          <p class="role" style="font-size:15px;margin:10px 0;">
+            ${escapeHtml([p.job_title, p.company].filter(Boolean).join(" · "))}
+          </p>
+
+          ${p.category ? `<p><strong>Category:</strong> ${escapeHtml(p.category)}</p>` : ""}
+          ${p.bio ? `<p style="font-size:15px;line-height:1.8;white-space:pre-wrap;">${escapeHtml(p.bio)}</p>` : ""}
+          ${p.address ? `<p><strong>Address</strong><br>${escapeHtml(p.address)}</p>` : ""}
+
+          <div class="card-links" style="gap:10px;margin-top:22px;">
+            ${contactLinks || '<span class="muted">No contact links have been added yet.</span>'}
+          </div>
+        </div>
+      </article>
+    </section>`;
+}
+
+async function renderProfiles() {
+  const grid = $("profile-grid");
+  if (!grid) return;
+
+  const params = new URLSearchParams(location.search);
+  const requestedSlug = params.get("p");
+  const previewMode = params.get("preview") === "1";
 
   if (requestedSlug) {
-    const p = published.find(item => item.slug === requestedSlug);
-    if (p) {
-      document.title = `${p.full_name} | Tap C9`;
-      $("profile-grid").innerHTML =
-        `<div class="public-profile-view">${cardHtml(p)}<p class="muted">This is the public profile. Use the contact buttons to connect.</p></div>`;
+    grid.innerHTML = `<div class="empty-state">Loading profile…</div>`;
+
+    if (previewMode) {
+      const { data: { session } } = await supabase.auth.getSession();
+
+      if (!session) {
+        grid.innerHTML = `
+          <div class="empty-state">
+            Preview is only available while signed in.
+            <p><a href="./">Back to directory</a></p>
+          </div>`;
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("client_profiles")
+        .select("*")
+        .eq("slug", requestedSlug)
+        .maybeSingle();
+
+      if (error || !data) {
+        grid.innerHTML = `
+          <div class="empty-state">
+            Profile not found, or you do not have permission to preview it.
+            <p><a href="./">Back to directory</a></p>
+          </div>`;
+        return;
+      }
+
+      renderSingleProfile(data, true);
       return;
     }
+
+    const { data, error } = await supabase
+      .from("client_profiles")
+      .select("*")
+      .eq("slug", requestedSlug)
+      .eq("is_published", true)
+      .maybeSingle();
+
+    if (error || !data) {
+      document.title = "Profile not found | Tap C9";
+      grid.innerHTML = `
+        <div class="empty-state">
+          This profile could not be found or has not been published.
+          <p><a href="./">Back to directory</a></p>
+        </div>`;
+      return;
+    }
+
+    renderSingleProfile(data);
+    return;
   }
 
   document.title = "Tap C9 | Digital Business Cards";
-
-  const filtered = published.filter(p =>
-    [p.full_name, p.company, p.category, p.job_title, p.bio]
-      .some(v => (v || "").toLowerCase().includes(search))
-  );
-
-  $("profile-grid").innerHTML = filtered.length
-    ? filtered.map(cardHtml).join("")
-    : `<div class="empty-state">${
-        configured
-          ? "No published profiles found. Try another search."
-          : "Connect Supabase to load your published client profiles."
-      }</div>`;
-}
-
-async function loadPublicProfiles() {
-  if (!supabase) {
-    renderProfiles();
-    return;
-  }
+  grid.innerHTML = `<div class="empty-state">Loading profiles…</div>`;
 
   const { data, error } = await supabase
     .from("client_profiles")
@@ -158,55 +224,47 @@ async function loadPublicProfiles() {
 
   if (error) {
     console.error(error);
-    $("profile-grid").innerHTML =
-      `<div class="empty-state">Profiles could not load. Check your database setup and RLS policies.</div>`;
+    grid.innerHTML = `<div class="empty-state">Profiles could not load. Check your Supabase database and RLS policies.</div>`;
     return;
   }
 
   profiles = data || [];
-  renderProfiles();
+
+  const search = $("directory-search").value.trim().toLowerCase();
+  const filtered = profiles.filter(p =>
+    [p.full_name, p.company, p.category, p.job_title, p.bio]
+      .some(v => (v || "").toLowerCase().includes(search))
+  );
+
+  grid.innerHTML = filtered.length
+    ? filtered.map(cardHtml).join("")
+    : `<div class="empty-state">No published profiles found. Try another search.</div>`;
 }
 
-// Upload a selected image to the Supabase Storage bucket.
 async function uploadProfilePhoto() {
-  const fileInput = $("p-photo-file");
-  const file = fileInput?.files?.[0];
+  const file = $("p-photo-file")?.files?.[0];
 
-  // No new file selected: keep the existing URL.
   if (!file) return $("p-photo").value.trim();
 
   const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
-
   if (!allowedTypes.includes(file.type)) {
     throw new Error("Choose a JPG, PNG, or WebP image.");
   }
-
   if (file.size > 5 * 1024 * 1024) {
     throw new Error("Photo must be 5 MB or smaller.");
   }
 
-  const extensions = {
-    "image/jpeg": "jpg",
-    "image/png": "png",
-    "image/webp": "webp"
-  };
+  const ext = { "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp" }[file.type];
+  const path = `${crypto.randomUUID()}.${ext}`;
 
-  const path = `${crypto.randomUUID()}.${extensions[file.type]}`;
-
-  const { error } = await supabase.storage
-    .from("client-photos")
-    .upload(path, file, {
-      contentType: file.type,
-      upsert: false
-    });
+  const { error } = await supabase.storage.from("client-photos").upload(path, file, {
+    contentType: file.type,
+    upsert: false
+  });
 
   if (error) throw error;
 
-  const { data } = supabase.storage
-    .from("client-photos")
-    .getPublicUrl(path);
-
-  return data.publicUrl;
+  return supabase.storage.from("client-photos").getPublicUrl(path).data.publicUrl;
 }
 
 function resetEditor() {
@@ -242,12 +300,10 @@ function fillEditor(p) {
   };
 
   Object.entries(fields).forEach(([id, value]) => {
-    $(id).value = value || "";
+    if ($(id)) $(id).value = value || "";
   });
 
-  // Clear any previously selected local file.
   if ($("p-photo-file")) $("p-photo-file").value = "";
-
   $("profile-published").checked = !!p.is_published;
   $("editor-heading").textContent = "Edit profile";
   $("delete-profile").hidden = false;
@@ -258,13 +314,12 @@ function fillEditor(p) {
 function renderAdminList() {
   $("admin-profile-list").innerHTML = profiles.length
     ? profiles.map(p => `
-        <button type="button"
-          class="admin-profile-item ${p.id === selectedProfileId ? "active" : ""}"
-          data-id="${escapeHtml(p.id)}">
-          <strong>${escapeHtml(p.full_name)}</strong>
-          <small>${p.is_published ? "Published" : "Draft"} · /${escapeHtml(p.slug)}</small>
-        </button>
-      `).join("")
+      <button type="button"
+        class="admin-profile-item ${p.id === selectedProfileId ? "active" : ""}"
+        data-id="${escapeHtml(p.id)}">
+        <strong>${escapeHtml(p.full_name)}</strong>
+        <small>${p.is_published ? "Published" : "Draft"} · /${escapeHtml(p.slug)}</small>
+      </button>`).join("")
     : `<p class="muted">No profiles yet. Create your first profile.</p>`;
 
   $("admin-profile-list").querySelectorAll("[data-id]").forEach(btn => {
@@ -288,7 +343,6 @@ async function loadAdminProfiles() {
 
   profiles = data || [];
   renderAdminList();
-  renderProfiles();
 }
 
 function collectForm() {
@@ -306,8 +360,6 @@ function collectForm() {
     }
   }
 
-  const email = value("p-email");
-
   return {
     full_name: value("p-name"),
     job_title: value("p-title") || null,
@@ -315,7 +367,7 @@ function collectForm() {
     category: value("p-category") || null,
     slug,
     phone: value("p-phone") || null,
-    email: email || null,
+    email: value("p-email") || null,
     whatsapp: value("p-whatsapp") || null,
     facebook_url: value("p-facebook") || null,
     instagram_url: value("p-instagram") || null,
@@ -331,42 +383,24 @@ function collectForm() {
 function showDashboard(session) {
   $("auth-panel").hidden = !!session;
   $("dashboard-panel").hidden = !session;
-
-  if (session) {
-    $("signed-in-label").textContent = `Signed in: ${session.user.email}`;
-  }
+  if (session) $("signed-in-label").textContent = `Signed in: ${session.user.email}`;
 }
 
 async function restoreSession() {
-  if (!supabase) return;
-
   const { data: { session } } = await supabase.auth.getSession();
   showDashboard(session);
-
   if (session) await loadAdminProfiles();
 }
 
 $("admin-open").addEventListener("click", async () => {
   $("admin-dialog").showModal();
-
-  if (!configured) {
-    setStatus("auth-status", "Configure your Supabase URL and publishable key first.", true);
-  } else {
-    await restoreSession();
-  }
+  await restoreSession();
 });
 
-$("admin-close").addEventListener("click", () => {
-  $("admin-dialog").close();
-});
+$("admin-close").addEventListener("click", () => $("admin-dialog").close());
 
 $("login-form").addEventListener("submit", async e => {
   e.preventDefault();
-
-  if (!supabase) {
-    return setStatus("auth-status", "Supabase is not configured.", true);
-  }
-
   setStatus("auth-status", "Signing in…");
 
   const { data, error } = await supabase.auth.signInWithPassword({
@@ -383,16 +417,12 @@ $("login-form").addEventListener("submit", async e => {
 });
 
 $("logout-button").addEventListener("click", async () => {
-  if (!supabase) return;
-
   const { error } = await supabase.auth.signOut();
-
   if (error) return notify(error.message);
 
   profiles = [];
   showDashboard(null);
   resetEditor();
-  await loadPublicProfiles();
   notify("Signed out.");
 });
 
@@ -401,33 +431,14 @@ $("new-profile-button").addEventListener("click", resetEditor);
 $("profile-form").addEventListener("submit", async e => {
   e.preventDefault();
 
-  if (!supabase) {
-    return setStatus("admin-status", "Supabase is not configured.", true);
-  }
-
   try {
     const payload = collectForm();
     setStatus("admin-status", "Uploading photo and saving profile…");
-
-    // Replace the typed URL with the uploaded photo URL if a file was selected.
     payload.photo_url = await uploadProfilePhoto() || null;
 
-    let query;
-
-    if (selectedProfileId) {
-      query = supabase
-        .from("client_profiles")
-        .update(payload)
-        .eq("id", selectedProfileId)
-        .select()
-        .single();
-    } else {
-      query = supabase
-        .from("client_profiles")
-        .insert(payload)
-        .select()
-        .single();
-    }
+    const query = selectedProfileId
+      ? supabase.from("client_profiles").update(payload).eq("id", selectedProfileId).select().single()
+      : supabase.from("client_profiles").insert(payload).select().single();
 
     const { data, error } = await query;
     if (error) throw error;
@@ -435,8 +446,7 @@ $("profile-form").addEventListener("submit", async e => {
     selectedProfileId = data.id;
     await loadAdminProfiles();
     fillEditor(data);
-
-    setStatus("admin-status", "Saved. Published changes are now available to clients.");
+    setStatus("admin-status", "Profile saved successfully.");
     notify("Profile saved.");
   } catch (err) {
     setStatus("admin-status", err.message || "Could not save profile.", true);
@@ -444,16 +454,9 @@ $("profile-form").addEventListener("submit", async e => {
 });
 
 $("delete-profile").addEventListener("click", async () => {
-  if (!selectedProfileId ||
-      !confirm("Delete this profile permanently? This cannot be undone.")) {
-    return;
-  }
+  if (!selectedProfileId || !confirm("Delete this profile permanently? This cannot be undone.")) return;
 
-  const { error } = await supabase
-    .from("client_profiles")
-    .delete()
-    .eq("id", selectedProfileId);
-
+  const { error } = await supabase.from("client_profiles").delete().eq("id", selectedProfileId);
   if (error) return setStatus("admin-status", error.message, true);
 
   resetEditor();
@@ -461,25 +464,28 @@ $("delete-profile").addEventListener("click", async () => {
   notify("Profile deleted.");
 });
 
-$("preview-profile").addEventListener("click", () => {
+$("preview-profile").addEventListener("click", async () => {
   const slug = $("p-slug").value.trim();
 
   if (!slug) {
-    return setStatus("admin-status", "Enter a profile slug first.", true);
+    setStatus("admin-status", "Enter a profile slug first.", true);
+    return;
   }
 
-  window.open("./?p=" + encodeURIComponent(slug), "_blank", "noopener");
+  const url = new URL("./", location.href);
+  url.searchParams.set("p", slug);
+  url.searchParams.set("preview", "1");
+  window.open(url.href, "_blank", "noopener,noreferrer");
 });
 
-$("search-button").addEventListener("click", renderProfiles);
-$("directory-search").addEventListener("input", renderProfiles);
+$("search-button").addEventListener("click", () => renderProfiles());
+$("directory-search").addEventListener("input", () => renderProfiles());
 
-if (!configured) {
-  $("profile-grid").innerHTML =
-    `<div class="empty-state">Configure Supabase to activate the directory and admin features.</div>`;
+supabase.auth.onAuthStateChange((_event, session) => showDashboard(session));
+
+const requestedSlug = new URLSearchParams(location.search).get("p");
+if (requestedSlug) {
+  renderProfiles();
 } else {
-  loadPublicProfiles();
-  supabase.auth.onAuthStateChange((_event, session) => {
-    showDashboard(session);
-  });
+  renderProfiles();
 }
