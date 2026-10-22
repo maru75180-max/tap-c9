@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0756a8">
+  <meta name="description" content="Tap C9 digital business cards. Share your contact details with one tap.">
+  <title>Tap C9 | Digital Business Cards</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="./"><span class="brand-mark">C9</span><span>Tap C9</span></a>
+  <nav><a href="#how">How it works</a><a href="#features">Features</a><a class="nav-cta" href="#contact">Get your card</a></nav>
+</header>
+<main>
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow"><span class="pulse"></span> YOUR BUSINESS. ONE TAP AWAY.</p>
+      <h1>Make every<br><span>connection count.</span></h1>
+      <p class="hero-text">A smarter digital business card. Help people save your contact details, discover your work, and connect with you anywhere.</p>
+      <div class="hero-actions"><a class="button primary" href="#contact">Get started <span>↗</span></a><a class="button secondary" href="#how">See how it works</a></div>
+      <div class="trust-row"><span class="trust-icon">✓</span><span>No app required for clients</span><span class="trust-icon">✓</span><span>Update details anytime</span></div>
+    </div>
+    <div class="hero-art">
+      <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+      <div class="phone"><div class="phone-notch"></div>
+        <div class="profile-cover"><div class="cover-tag">TAP C9 DIGITAL CARD</div><div class="avatar-placeholder">YOUR<br>PHOTO</div></div>
+        <div class="phone-content"><div class="preview-name">Your Name</div><div class="preview-role">Your Position · Your Company</div><p class="preview-bio">Your business introduction, all in one place.</p><div class="preview-actions"><span>☎ Call</span><span>✉ Email</span><span>⌖ Map</span></div><div class="preview-line"></div><div class="preview-social"><i>f</i><i>◎</i><i>↗</i></div></div>
+      </div>
+      <div class="float-card"><span class="nfc-symbol">)))</span><div><strong>Tap. Connect.</strong><small>Keep your details current.</small></div></div><div class="blue-glow"></div>
+    </div>
+  </section>
+  <section class="benefits" id="features"><div class="section-heading"><p class="eyebrow">BUILT FOR THE WAY YOU WORK</p><h2>More than a business card.</h2><p>Make it simple for every new connection to reach you.</p></div>
+    <div class="benefit-grid"><article class="benefit"><div class="feature-icon">↗</div><h3>One tap to connect</h3><p>Share your digital profile with a compatible NFC card or QR code.</p></article><article class="benefit"><div class="feature-icon">✎</div><h3>Details that stay updated</h3><p>Change your contact details and links without replacing the NFC tag.</p></article><article class="benefit"><div class="feature-icon">⌖</div><h3>Easy to find</h3><p>Give customers direct links to your socials, website, and Google Maps location.</p></article></div>
+  </section>
+  <section class="how-section" id="how"><div class="section-heading"><p class="eyebrow">SIMPLE BY DESIGN</p><h2>From tap to connection.</h2></div><div class="steps"><div class="step"><span>01</span><h3>Tap the card</h3><p>Your phone opens the person's unique digital profile.</p></div><div class="step"><span>02</span><h3>Explore their details</h3><p>View contact information, business links, and location.</p></div><div class="step"><span>03</span><h3>Connect instantly</h3><p>Call, email, message, or save their contact details.</p></div></div></section>
+  <section class="contact-banner" id="contact"><div><p class="eyebrow">READY TO MAKE AN IMPRESSION?</p><h2>Let’s make your next introduction count.</h2><p>Contact Tap C9 to ask about your own NFC digital business card.</p></div><a class="button light" id="sales-link" href="mailto:hello@example.com">Ask about a card <span>↗</span></a></section>
+  <section class="directory" id="directory"><div class="section-heading"><p class="eyebrow">TAP C9 NETWORK</p><h2>Discover our digital cards.</h2><p>Search for a person or business in the Tap C9 directory.</p></div>
+    <div class="search-row"><input id="directory-search" type="search" placeholder="Search name, company, or category…" aria-label="Search profiles"><button class="button primary" id="search-button">Search</button></div>
+    <div id="profile-grid" class="profile-grid"><div class="empty-state">Loading profiles…</div></div>
+  </section>
+</main>
+<footer class="footer"><a class="brand" href="./"><span class="brand-mark">C9</span><span>Tap C9</span></a><p>Better connections, one tap at a time.</p><button id="admin-open" class="text-button" type="button">Admin</button><span>© <span id="year"></span> Tap C9</span></footer>
+<dialog id="admin-dialog" class="admin-dialog">
+  <div class="dialog-head"><div><p class="eyebrow">TAP C9 MANAGEMENT</p><h2>Admin dashboard</h2></div><button class="icon-button" id="admin-close" aria-label="Close admin">×</button></div>
+  <div id="auth-panel"><p class="muted">Sign in with the admin account created in Supabase.</p><form id="login-form" class="form-stack"><label>Email<input type="email" id="admin-email" autocomplete="username" required></label><label>Password<input type="password" id="admin-password" autocomplete="current-password" required></label><button class="button primary" type="submit">Sign in</button><p id="auth-status" class="status-message" role="status"></p></form></div>
+  <div id="dashboard-panel" hidden><div class="dashboard-top"><p id="signed-in-label" class="muted"></p><button class="button secondary small" id="logout-button" type="button">Sign out</button></div>
+    <div class="dashboard-layout"><aside><button id="new-profile-button" class="button primary full" type="button">+ New profile</button><div id="admin-profile-list" class="admin-profile-list"></div></aside>
+      <form id="profile-form" class="form-stack profile-editor"><input type="hidden" id="profile-id"><div class="editor-title"><h3 id="editor-heading">Create profile</h3><label class="toggle-label"><input type="checkbox" id="profile-published"> Published</label></div>
+        <div class="form-grid">
+          <label>Full name *<input id="p-name" required maxlength="120"></label><label>Job title<input id="p-title" maxlength="120"></label>
+          <label>Company<input id="p-company" maxlength="160"></label><label>Category<input id="p-category" maxlength="80" placeholder="e.g. Real Estate"></label>
+          <label>Profile URL slug *<input id="p-slug" required pattern="[a-zA-Z0-9-]+" placeholder="your-name"><small>Public URL ends in ?p=your-name</small></label><label>Phone<input id="p-phone" type="tel" maxlength="40"></label>
+          <label>Email<input id="p-email" type="email" maxlength="254"></label><label>WhatsApp number<input id="p-whatsapp" maxlength="30" placeholder="Country code + number"></label>
+          <label>Facebook URL<input id="p-facebook" type="url" placeholder="https://…"></label><label>Instagram URL<input id="p-instagram" type="url" placeholder="https://…"></label>
+          <label>TikTok URL<input id="p-tiktok" type="url" placeholder="https://…"></label><label>Website URL<input id="p-website" type="url" placeholder="https://…"></label>
+          <label class="wide">Business address<textarea id="p-address" rows="2" maxlength="300"></textarea></label><label class="wide">Short bio<textarea id="p-bio" rows="3" maxlength="700"></textarea></label>
+          <label class="wide">Photo URL<input id="p-photo" type="url" placeholder="https://…"><small>Use a publicly accessible image URL. Do not paste private or sensitive images.</small></label>
+        </div>
+        <div class="editor-actions"><button class="button primary" type="submit">Save profile</button><button class="button secondary" id="preview-profile" type="button">Preview profile</button><button class="button danger" id="delete-profile" type="button">Delete</button></div><p id="admin-status" class="status-message" role="status"></p>
+      </form>
+    </div>
+  </div>
+</dialog>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script type="module" src="app.js"></script>
+</body></html>
