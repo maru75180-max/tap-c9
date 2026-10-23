@@ -1,4 +1,3 @@
-
 /* =====================================================
    TAP C9 — COMPLETE STYLESHEET
    Dark Mode / Neon Blue
@@ -92,6 +91,8 @@ img {
   line-height: 1.6;
 }
 
+/* Updated consistent button styles */
+
 .button {
   display: inline-flex;
   min-height: 46px;
@@ -105,7 +106,12 @@ img {
   font-weight: 750;
   text-align: center;
   text-decoration: none;
-  transition: transform .2s, background .2s, border-color .2s;
+  transition:
+    transform .2s ease,
+    background .2s ease,
+    border-color .2s ease,
+    box-shadow .2s ease,
+    color .2s ease;
   cursor: pointer;
 }
 
@@ -113,36 +119,65 @@ img {
   transform: translateY(-2px);
 }
 
+.button:active {
+  transform: translateY(0);
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+}
+
 .button.primary {
-  background: linear-gradient(135deg, #2187ff, #0756d9);
-  color: white;
-  box-shadow: 0 8px 28px rgba(15, 103, 255, .2);
+  border-color: rgba(99, 217, 255, .3);
+  background: linear-gradient(135deg, #38bdf8 0%, #1677ff 48%, #0756d9 100%);
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(15, 103, 255, .24);
 }
 
 .button.primary:hover {
-  background: linear-gradient(135deg, #43a3ff, #1677ff);
+  border-color: rgba(143, 225, 255, .65);
+  background: linear-gradient(135deg, #63d9ff 0%, #2187ff 55%, #1264ed 100%);
+  box-shadow: 0 10px 30px rgba(22, 119, 255, .36);
 }
 
 .button.secondary {
-  border-color: var(--border);
-  background: rgba(255, 255, 255, .035);
-  color: var(--text);
+  border-color: rgba(99, 174, 255, .3);
+  background: rgba(22, 119, 255, .09);
+  color: #dceeff;
 }
 
 .button.secondary:hover {
-  border-color: rgba(89, 177, 255, .55);
-  background: rgba(45, 120, 205, .12);
+  border-color: rgba(99, 217, 255, .65);
+  background: rgba(45, 120, 205, .2);
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(22, 119, 255, .12);
 }
 
 .button.light {
-  background: #fff;
+  border-color: rgba(99, 217, 255, .35);
+  background: #eaf6ff;
   color: #0756a8;
+  box-shadow: 0 5px 18px rgba(0, 0, 0, .12);
+}
+
+.button.light:hover {
+  border-color: #fff;
+  background: #fff;
+  color: #06458a;
+  box-shadow: 0 8px 22px rgba(56, 189, 248, .16);
 }
 
 .button.danger {
-  border-color: rgba(255, 100, 124, .3);
-  background: rgba(255, 100, 124, .09);
+  border-color: rgba(255, 100, 124, .35);
+  background: rgba(255, 100, 124, .1);
   color: #ff9baa;
+}
+
+.button.danger:hover {
+  border-color: rgba(255, 100, 124, .7);
+  background: rgba(255, 100, 124, .2);
+  color: #ffc0ca;
 }
 
 .button.small {
@@ -178,6 +213,12 @@ img {
   background: rgba(255, 255, 255, .04);
   color: white;
   font-size: 25px;
+  transition: background .2s, border-color .2s;
+}
+
+.icon-button:hover {
+  border-color: rgba(99, 217, 255, .5);
+  background: rgba(22, 119, 255, .15);
 }
 
 .muted {
@@ -236,7 +277,9 @@ img {
 }
 
 @keyframes tapc9-spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* ------------------ Navigation ------------------ */
@@ -846,10 +889,11 @@ textarea:focus {
   font-size: 13px;
   font-weight: 800;
   text-decoration: none;
-  transition: background .2s;
+  transition: background .2s, border-color .2s;
 }
 
 .view-profile-link:hover {
+  border-color: rgba(99, 217, 255, .65);
   background: rgba(22, 119, 255, .25);
 }
 
@@ -1095,7 +1139,6 @@ textarea:focus {
 
 /* =====================================================
    PROFILE-ONLY VIEW
-   When app.js adds body.profile-mode, hide the homepage.
    ===================================================== */
 
 body.profile-mode {
@@ -1215,30 +1258,65 @@ body.profile-mode .profile-category {
   letter-spacing: 1.5px;
 }
 
+/* Circular, centered digital profile picture */
+
 body.profile-mode .profile-hero {
   position: relative;
-  height: 250px;
+  display: flex;
+  min-height: 245px;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 20px;
   overflow: hidden;
-  background: #101b2e;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(22, 119, 255, .22), transparent 55%),
+    linear-gradient(145deg, #101b2e, #0b1423);
+}
+
+body.profile-mode .profile-hero::before {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(56, 189, 248, .08), transparent 65%);
+  content: "";
+  pointer-events: none;
+}
+
+body.profile-mode .profile-hero-photo,
+body.profile-mode .profile-hero-placeholder {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: 168px;
+  height: 168px;
+  flex: 0 0 168px;
+  place-items: center;
+  overflow: hidden;
+  border: 4px solid #38bdf8;
+  border-radius: 50%;
+  background: radial-gradient(circle, #1559a8, #101b2e 72%);
+  color: white;
+  box-shadow:
+    0 0 0 6px rgba(56, 189, 248, .1),
+    0 0 28px rgba(22, 119, 255, .32);
 }
 
 body.profile-mode .profile-hero-photo {
-  display: block;
-  width: 100%;
-  height: 100%;
   object-fit: cover;
 }
 
 body.profile-mode .profile-hero-placeholder {
-  display: grid;
-  width: 100%;
-  height: 100%;
-  place-items: center;
-  background: radial-gradient(circle, #1559a8, #101b2e 72%);
-  color: white;
-  font-size: 64px;
+  font-size: 58px;
   font-weight: 800;
+  text-align: center;
 }
+
+/* If the photo is rendered as an image inside the hero */
+
+body.profile-mode .profile-hero img {
+  max-width: none;
+}
+
+/* Profile information */
 
 body.profile-mode .profile-intro {
   padding: 25px 24px 18px;
@@ -1332,15 +1410,15 @@ body.profile-mode .social-button {
   align-items: center;
   gap: 9px;
   padding: 13px;
-  border: 1px solid rgba(89, 166, 255, .24);
+  border: 1px solid rgba(89, 166, 255, .3);
   border-radius: 13px;
-  background: rgba(24, 69, 122, .23);
+  background: linear-gradient(135deg, rgba(24, 69, 122, .32), rgba(22, 119, 255, .12));
   color: #eaf4ff;
   font-size: 12px;
   font-weight: 750;
   text-decoration: none;
   overflow-wrap: anywhere;
-  transition: background .2s, border-color .2s, transform .2s;
+  transition: background .2s, border-color .2s, transform .2s, box-shadow .2s;
 }
 
 body.profile-mode .action-button:hover,
@@ -1348,6 +1426,7 @@ body.profile-mode .social-button:hover {
   transform: translateY(-1px);
   border-color: #36a5ff;
   background: rgba(21, 111, 218, .35);
+  box-shadow: 0 5px 18px rgba(22, 119, 255, .13);
 }
 
 body.profile-mode .action-button svg,
@@ -1629,7 +1708,19 @@ body.profile-mode .profile-error .back-directory {
   }
 
   body.profile-mode .profile-hero {
-    height: 220px;
+    min-height: 220px;
+    padding: 25px 16px;
+  }
+
+  body.profile-mode .profile-hero-photo,
+  body.profile-mode .profile-hero-placeholder {
+    width: 148px;
+    height: 148px;
+    flex-basis: 148px;
+  }
+
+  body.profile-mode .profile-hero-placeholder {
+    font-size: 50px;
   }
 
   body.profile-mode .profile-intro {
@@ -1692,6 +1783,13 @@ body.profile-mode .profile-error .back-directory {
   body.profile-mode .quick-actions,
   body.profile-mode .social-grid {
     grid-template-columns: 1fr;
+  }
+
+  body.profile-mode .profile-hero-photo,
+  body.profile-mode .profile-hero-placeholder {
+    width: 132px;
+    height: 132px;
+    flex-basis: 132px;
   }
 }
 
