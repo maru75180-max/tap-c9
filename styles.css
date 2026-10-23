@@ -1,166 +1,308 @@
 
-/* TAP C9 — CIRCULAR PROFILE + COLORED ACTION BUTTONS */
+/* TAP C9 — Profile-only page: Dark Mode / Neon Blue */
 
-/* Circular profile photo */
+body.profile-mode {
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(0, 117, 255, 0.16), transparent 48%),
+    #070b14 !important;
+  color: #edf5ff !important;
+  min-height: 100vh;
+}
+
+/* Hide homepage and navigation while viewing a profile */
+body.profile-mode > .topbar,
+body.profile-mode > main > .hero,
+body.profile-mode > main > .benefits,
+body.profile-mode > main > .how-section,
+body.profile-mode > main > .contact-banner,
+body.profile-mode > .footer {
+  display: none !important;
+}
+
+/* Make the directory container act as a standalone profile page */
+body.profile-mode main {
+  display: block;
+  min-height: 100vh;
+  padding: 24px 16px 48px;
+}
+
+body.profile-mode .directory {
+  display: block;
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+body.profile-mode .directory > .section-heading,
+body.profile-mode .directory > .search-row {
+  display: none !important;
+}
+
+body.profile-mode #profile-grid {
+  display: block;
+  width: 100%;
+  margin: 0;
+}
+
+/* Profile page layout */
+body.profile-mode .profile-page-wrap {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+body.profile-mode .back-directory {
+  display: inline-flex;
+  margin: 0 0 18px;
+  color: #70baff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+body.profile-mode .back-directory:hover {
+  color: #ffffff;
+}
+
+body.profile-mode .digital-card {
+  overflow: hidden;
+  width: 100%;
+  background: linear-gradient(160deg, #111d31, #0a1020 70%);
+  border: 1px solid rgba(76, 163, 255, 0.28);
+  border-radius: 24px;
+  box-shadow: 0 20px 70px rgba(0, 0, 0, 0.4);
+  color: #edf5ff;
+}
+
+body.profile-mode .digital-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 22px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+body.profile-mode .brand-mark {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #f4f8ff;
+  font-weight: 800;
+}
+
+body.profile-mode .brand-orb {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #38bdf8, #0756d9);
+  color: white;
+}
+
+body.profile-mode .digital-label,
+body.profile-mode .profile-category {
+  color: #64baff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
 body.profile-mode .profile-hero {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  width: 100% !important;
-  margin: 10px auto 26px !important;
-  overflow: visible !important;
+  position: relative;
+  height: 250px;
+  overflow: hidden;
+  background: #101b2e;
 }
 
 body.profile-mode .profile-hero-photo {
-  display: block !important;
-  width: 190px !important;
-  height: 190px !important;
-  min-width: 190px !important;
-  max-width: 190px !important;
-  aspect-ratio: 1 / 1 !important;
-  margin: 0 auto !important;
-  border: 4px solid #27d9f2 !important;
-  border-radius: 50% !important;
-  object-fit: cover !important;
-  object-position: center !important;
-  box-shadow:
-    0 0 0 6px rgba(39, 217, 242, .10),
-    0 0 28px rgba(39, 217, 242, .24) !important;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 body.profile-mode .profile-hero-placeholder {
-  display: grid !important;
-  place-items: center !important;
-  width: 190px !important;
-  height: 190px !important;
-  min-width: 190px !important;
-  border-radius: 50% !important;
-  background: #0b2944 !important;
-  border: 4px solid #27d9f2 !important;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, #1559a8, #101b2e 72%);
+  color: white;
+  font-size: 64px;
+  font-weight: 800;
 }
 
-/* Default button style */
+body.profile-mode .profile-intro {
+  padding: 25px 24px 18px;
+}
+
+body.profile-mode .profile-intro h1 {
+  margin: 10px 0;
+  color: #ffffff;
+  font-size: clamp(28px, 7vw, 38px);
+  line-height: 1.12;
+  overflow-wrap: anywhere;
+}
+
+body.profile-mode .profile-role {
+  margin: 8px 0;
+  color: #80c5ff;
+  line-height: 1.6;
+}
+
+body.profile-mode .profile-bio {
+  margin: 14px 0 0;
+  color: #b8c7dc;
+  line-height: 1.7;
+  white-space: pre-line;
+}
+
+body.profile-mode .contact-details {
+  margin: 0 24px 22px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+}
+
+body.profile-mode .detail-row + .detail-row {
+  margin-top: 15px;
+}
+
+body.profile-mode .detail-label {
+  display: block;
+  margin-bottom: 5px;
+  color: #6bbcff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+}
+
+body.profile-mode .detail-row a {
+  color: #eaf4ff;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+body.profile-mode .profile-section {
+  padding: 0 24px 22px;
+}
+
+body.profile-mode .profile-section h2 {
+  margin: 0 0 13px;
+  color: #91a9c8;
+  font-size: 11px;
+  letter-spacing: 1.4px;
+}
+
+body.profile-mode .quick-actions,
+body.profile-mode .social-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
 body.profile-mode .action-button,
-body.profile-mode .quick-actions a,
-body.profile-mode .social-button,
-body.profile-mode .social-grid a {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 9px !important;
-  min-width: 0 !important;
-  min-height: 48px !important;
-  padding: 12px 10px !important;
-  border: 1px solid rgba(255, 255, 255, .12) !important;
-  border-radius: 14px !important;
-  background: #10243a !important;
-  color: #f5faff !important;
-  font-size: 14px !important;
-  font-weight: 700 !important;
-  text-align: center !important;
-  text-decoration: none !important;
-  overflow-wrap: anywhere !important;
-  transition: transform .2s ease, filter .2s ease !important;
+body.profile-mode .social-button {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  padding: 13px;
+  border: 1px solid rgba(89, 166, 255, 0.24);
+  border-radius: 13px;
+  background: rgba(24, 69, 122, 0.23);
+  color: #eaf4ff;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
 }
 
 body.profile-mode .action-button:hover,
-body.profile-mode .quick-actions a:hover,
-body.profile-mode .social-button:hover,
-body.profile-mode .social-grid a:hover {
-  transform: translateY(-2px) !important;
-  filter: brightness(1.15) !important;
+body.profile-mode .social-button:hover {
+  background: rgba(21, 111, 218, 0.35);
+  border-color: #36a5ff;
+  transform: translateY(-1px);
 }
 
-/* Phone — green */
-body.profile-mode a[href^="tel:"],
-body.profile-mode .action-button.phone {
-  background: #123b2b !important;
-  border-color: #24885b !important;
-  color: #8fffc0 !important;
-}
-
-/* Email — blue */
-body.profile-mode a[href^="mailto:"] {
-  background: #12365a !important;
-  border-color: #277bc1 !important;
-  color: #a5d8ff !important;
-}
-
-/* WhatsApp — green */
-body.profile-mode a[href*="wa.me"],
-body.profile-mode a[href*="whatsapp.com"] {
-  background: #103d2a !important;
-  border-color: #25a85a !important;
-  color: #8fffb4 !important;
-}
-
-/* Facebook — blue */
-body.profile-mode a[href*="facebook.com"] {
-  background: #122f61 !important;
-  border-color: #3978e5 !important;
-  color: #b6d0ff !important;
-}
-
-/* Instagram — pink/purple */
-body.profile-mode a[href*="instagram.com"] {
-  background: #482044 !important;
-  border-color: #d94e9b !important;
-  color: #ffc0e3 !important;
-}
-
-/* TikTok — dark with cyan accent */
-body.profile-mode a[href*="tiktok.com"] {
-  background: #20232c !important;
-  border-color: #38dce7 !important;
-  color: #c4fbff !important;
-}
-
-/* Website — neon blue */
-body.profile-mode a[href*="http"]:not([href*="facebook.com"]):not([href*="instagram.com"]):not([href*="tiktok.com"]):not([href*="wa.me"]):not([href*="whatsapp.com"]) {
-  background: #12365a !important;
-  border-color: #258fe0 !important;
-  color: #a5d8ff !important;
-}
-
-/* Keep icons visible */
 body.profile-mode .action-button svg,
-body.profile-mode .social-button svg,
-body.profile-mode .quick-actions a svg,
-body.profile-mode .social-grid a svg {
-  flex: 0 0 20px !important;
-  width: 20px !important;
-  height: 20px !important;
-  stroke: currentColor !important;
+body.profile-mode .social-button svg {
+  flex: 0 0 19px;
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: #65baff;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
-/* Button layout */
-body.profile-mode .quick-actions,
-body.profile-mode .social-grid {
-  display: grid !important;
-  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  gap: 10px !important;
+body.profile-mode .action-arrow {
+  margin-left: auto;
+  color: #65baff;
 }
 
-/* Mobile sizing */
+body.profile-mode .digital-card-footer {
+  padding: 17px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  color: #7390b5;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-align: center;
+}
+
+body.profile-mode .digital-card-footer span {
+  padding: 0 5px;
+  color: #3caaff;
+}
+
+body.profile-mode .profile-error,
+body.profile-mode .loading-state {
+  padding: 35px 20px;
+  border: 1px solid rgba(76, 163, 255, 0.25);
+  border-radius: 18px;
+  background: #111d31;
+  color: #edf5ff;
+  text-align: center;
+}
+
 @media (max-width: 480px) {
-  body.profile-mode .profile-hero-photo,
-  body.profile-mode .profile-hero-placeholder {
-    width: 160px !important;
-    height: 160px !important;
-    min-width: 160px !important;
+  body.profile-mode main {
+    padding: 14px 12px 30px;
   }
 
-  body.profile-mode .quick-actions,
-  body.profile-mode .social-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 8px !important;
+  body.profile-mode .digital-card {
+    border-radius: 18px;
   }
 
-  body.profile-mode .action-button,
-  body.profile-mode .quick-actions a,
-  body.profile-mode .social-button,
-  body.profile-mode .social-grid a {
-    padding: 11px 8px !important;
-    font-size: 13px !important;
+  body.profile-mode .profile-hero {
+    height: 220px;
+  }
+
+  body.profile-mode .profile-intro {
+    padding: 21px 18px 16px;
+  }
+
+  body.profile-mode .contact-details {
+    margin-right: 18px;
+    margin-left: 18px;
+  }
+
+  body.profile-mode .profile-section {
+    padding-right: 18px;
+    padding-left: 18px;
+  }
+
+  body.profile-mode .digital-card-top {
+    padding: 16px;
+  }
+
+  body.profile-mode .digital-label {
+    font-size: 8px;
   }
 }
