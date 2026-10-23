@@ -1,107 +1,166 @@
 
-/* TAP C9 — DESKTOP HOMEPAGE LAYOUT FIX */
+/* TAP C9 — CIRCULAR PROFILE + COLORED ACTION BUTTONS */
 
-/* Keep homepage centered and readable on desktop */
-body:not(.profile-mode) .topbar,
-body:not(.profile-mode) .hero,
-body:not(.profile-mode) .benefits,
-body:not(.profile-mode) .how-section,
-body:not(.profile-mode) .contact-banner,
-body:not(.profile-mode) .directory,
-body:not(.profile-mode) .footer {
-  width: min(1160px, calc(100% - 64px)) !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-}
-
-/* Homepage hero */
-body:not(.profile-mode) .hero {
-  display: grid !important;
-  grid-template-columns: minmax(0, 1.1fr) minmax(280px, .9fr) !important;
+/* Circular profile photo */
+body.profile-mode .profile-hero {
+  display: flex !important;
   align-items: center !important;
-  gap: 56px !important;
-  padding-top: 72px !important;
-  padding-bottom: 72px !important;
-}
-
-body:not(.profile-mode) .hero h1 {
-  max-width: 680px !important;
-  font-size: clamp(42px, 5vw, 72px) !important;
-  line-height: 1.05 !important;
-}
-
-body:not(.profile-mode) .hero p {
-  max-width: 570px !important;
-  font-size: 16px !important;
-  line-height: 1.8 !important;
-}
-
-body:not(.profile-mode) .hero-art,
-body:not(.profile-mode) .hero-visual,
-body:not(.profile-mode) .hero-graphic {
+  justify-content: center !important;
   width: 100% !important;
-  max-width: 460px !important;
-  margin-inline: auto !important;
+  margin: 10px auto 26px !important;
+  overflow: visible !important;
 }
 
-/* Section spacing */
-body:not(.profile-mode) .benefits,
-body:not(.profile-mode) .how-section,
-body:not(.profile-mode) .directory {
-  padding-top: 60px !important;
-  padding-bottom: 60px !important;
+body.profile-mode .profile-hero-photo {
+  display: block !important;
+  width: 190px !important;
+  height: 190px !important;
+  min-width: 190px !important;
+  max-width: 190px !important;
+  aspect-ratio: 1 / 1 !important;
+  margin: 0 auto !important;
+  border: 4px solid #27d9f2 !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  box-shadow:
+    0 0 0 6px rgba(39, 217, 242, .10),
+    0 0 28px rgba(39, 217, 242, .24) !important;
 }
 
-body:not(.profile-mode) .benefits-grid,
-body:not(.profile-mode) .benefit-grid,
-body:not(.profile-mode) .how-grid,
-body:not(.profile-mode) .steps-grid,
-body:not(.profile-mode) #profile-grid {
-  gap: 22px !important;
+body.profile-mode .profile-hero-placeholder {
+  display: grid !important;
+  place-items: center !important;
+  width: 190px !important;
+  height: 190px !important;
+  min-width: 190px !important;
+  border-radius: 50% !important;
+  background: #0b2944 !important;
+  border: 4px solid #27d9f2 !important;
 }
 
-/* Desktop directory cards */
-@media (min-width: 901px) {
-  body:not(.profile-mode) #profile-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  }
+/* Default button style */
+body.profile-mode .action-button,
+body.profile-mode .quick-actions a,
+body.profile-mode .social-button,
+body.profile-mode .social-grid a {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 9px !important;
+  min-width: 0 !important;
+  min-height: 48px !important;
+  padding: 12px 10px !important;
+  border: 1px solid rgba(255, 255, 255, .12) !important;
+  border-radius: 14px !important;
+  background: #10243a !important;
+  color: #f5faff !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  overflow-wrap: anywhere !important;
+  transition: transform .2s ease, filter .2s ease !important;
 }
 
-/* Tablet */
-@media (max-width: 900px) {
-  body:not(.profile-mode) .topbar,
-  body:not(.profile-mode) .hero,
-  body:not(.profile-mode) .benefits,
-  body:not(.profile-mode) .how-section,
-  body:not(.profile-mode) .contact-banner,
-  body:not(.profile-mode) .directory,
-  body:not(.profile-mode) .footer {
-    width: calc(100% - 36px) !important;
-  }
-
-  body:not(.profile-mode) .hero {
-    gap: 28px !important;
-  }
+body.profile-mode .action-button:hover,
+body.profile-mode .quick-actions a:hover,
+body.profile-mode .social-button:hover,
+body.profile-mode .social-grid a:hover {
+  transform: translateY(-2px) !important;
+  filter: brightness(1.15) !important;
 }
 
-/* Mobile */
-@media (max-width: 640px) {
-  body:not(.profile-mode) .hero {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 24px !important;
-    padding-top: 42px !important;
-    padding-bottom: 40px !important;
+/* Phone — green */
+body.profile-mode a[href^="tel:"],
+body.profile-mode .action-button.phone {
+  background: #123b2b !important;
+  border-color: #24885b !important;
+  color: #8fffc0 !important;
+}
+
+/* Email — blue */
+body.profile-mode a[href^="mailto:"] {
+  background: #12365a !important;
+  border-color: #277bc1 !important;
+  color: #a5d8ff !important;
+}
+
+/* WhatsApp — green */
+body.profile-mode a[href*="wa.me"],
+body.profile-mode a[href*="whatsapp.com"] {
+  background: #103d2a !important;
+  border-color: #25a85a !important;
+  color: #8fffb4 !important;
+}
+
+/* Facebook — blue */
+body.profile-mode a[href*="facebook.com"] {
+  background: #122f61 !important;
+  border-color: #3978e5 !important;
+  color: #b6d0ff !important;
+}
+
+/* Instagram — pink/purple */
+body.profile-mode a[href*="instagram.com"] {
+  background: #482044 !important;
+  border-color: #d94e9b !important;
+  color: #ffc0e3 !important;
+}
+
+/* TikTok — dark with cyan accent */
+body.profile-mode a[href*="tiktok.com"] {
+  background: #20232c !important;
+  border-color: #38dce7 !important;
+  color: #c4fbff !important;
+}
+
+/* Website — neon blue */
+body.profile-mode a[href*="http"]:not([href*="facebook.com"]):not([href*="instagram.com"]):not([href*="tiktok.com"]):not([href*="wa.me"]):not([href*="whatsapp.com"]) {
+  background: #12365a !important;
+  border-color: #258fe0 !important;
+  color: #a5d8ff !important;
+}
+
+/* Keep icons visible */
+body.profile-mode .action-button svg,
+body.profile-mode .social-button svg,
+body.profile-mode .quick-actions a svg,
+body.profile-mode .social-grid a svg {
+  flex: 0 0 20px !important;
+  width: 20px !important;
+  height: 20px !important;
+  stroke: currentColor !important;
+}
+
+/* Button layout */
+body.profile-mode .quick-actions,
+body.profile-mode .social-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+}
+
+/* Mobile sizing */
+@media (max-width: 480px) {
+  body.profile-mode .profile-hero-photo,
+  body.profile-mode .profile-hero-placeholder {
+    width: 160px !important;
+    height: 160px !important;
+    min-width: 160px !important;
   }
 
-  body:not(.profile-mode) .hero h1 {
-    font-size: clamp(38px, 10vw, 54px) !important;
+  body.profile-mode .quick-actions,
+  body.profile-mode .social-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
   }
 
-  body:not(.profile-mode) .hero-art,
-  body:not(.profile-mode) .hero-visual,
-  body:not(.profile-mode) .hero-graphic {
-    max-width: 100% !important;
+  body.profile-mode .action-button,
+  body.profile-mode .quick-actions a,
+  body.profile-mode .social-button,
+  body.profile-mode .social-grid a {
+    padding: 11px 8px !important;
+    font-size: 13px !important;
   }
 }
