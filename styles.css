@@ -1803,3 +1803,95 @@ body.profile-mode .profile-error .back-directory {
     transition-duration: .01ms !important;
   }
 }
+
+/* =====================================================
+   TAP C9 — SOCIAL BUTTON NEON GLOW EFFECTS
+   ===================================================== */
+
+/* Default social button glow */
+body.profile-mode .social-grid .social-button {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  box-shadow:
+    0 0 8px rgba(56, 189, 248, .08),
+    inset 0 0 8px rgba(56, 189, 248, .025);
+  transition:
+    color .25s ease,
+    background .25s ease,
+    border-color .25s ease,
+    box-shadow .25s ease,
+    transform .25s ease;
+}
+
+/* Social icon glow */
+body.profile-mode .social-grid .social-button svg {
+  filter: drop-shadow(0 0 4px currentColor);
+  transition:
+    color .25s ease,
+    stroke .25s ease,
+    filter .25s ease;
+}
+
+/* Social button hover glow */
+body.profile-mode .social-grid .social-button:hover {
+  transform: translateY(-3px) scale(1.015);
+  border-color: var(--cyan, #63d9ff);
+  background: linear-gradient(
+    135deg,
+    rgba(22, 119, 255, .28),
+    rgba(56, 189, 248, .16)
+  );
+  box-shadow:
+    0 0 8px rgba(56, 189, 248, .4),
+    0 0 20px rgba(22, 119, 255, .28),
+    inset 0 0 12px rgba(56, 189, 248, .08);
+}
+
+body.profile-mode .social-grid .social-button:hover svg {
+  color: #fff;
+  stroke: #fff;
+  filter:
+    drop-shadow(0 0 4px #38bdf8)
+    drop-shadow(0 0 8px #1677ff);
+}
+
+/* Quick-action button glow */
+body.profile-mode .quick-actions .action-button {
+  transition:
+    color .25s ease,
+    background .25s ease,
+    border-color .25s ease,
+    box-shadow .25s ease,
+    transform .25s ease;
+}
+
+body.profile-mode .quick-actions .action-button:hover {
+  transform: translateY(-3px);
+  border-color: #63d9ff;
+  box-shadow:
+    0 0 8px rgba(56, 189, 248, .4),
+    0 0 22px rgba(22, 119, 255, .28);
+}
+
+body.profile-mode .quick-actions .action-button:hover svg {
+  filter:
+    drop-shadow(0 0 4px #38bdf8)
+    drop-shadow(0 0 8px #1677ff);
+}
+
+/* Keyboard accessibility */
+body.profile-mode .social-grid .social-button:focus-visible,
+body.profile-mode .quick-actions .action-button:focus-visible {
+  outline: 2px solid #63d9ff;
+  outline-offset: 3px;
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  body.profile-mode .social-grid .social-button,
+  body.profile-mode .quick-actions .action-button {
+    transition: none !important;
+    transform: none !important;
+  }
+}
